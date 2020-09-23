@@ -1,4 +1,3 @@
-
 #include <Arduino.h>
 #include <analog_in.h>
 #include <PWM_out.h>
@@ -9,18 +8,28 @@
 class stateMachine{
 
     public:
-    stateMachine(bool led);
-    void step();
-    void stop();
-    void readData();
-    void writeData();
+        stateMachine();
+        
+        void updateState(char stepOrBack);
+        void stop();
+        void start();
+        void restart();
+        void blink(int division);
+        int getLedIntensity();
+        
+        //Operations of each state
+        void operationToDo();
+        void ledOperation();
 
     private:
-    char state;
-    bool ledUsed;
-    Analog_in testInput; //Analog input á A5 (5)
-    Digital_in buttonInput; //Button input on pin 12 (PB4) with ISR set on true. (0, false);
-    PWM_out ledTimer;
-
-
+        int state;             //Initilization = 1, Operational = 3                   
+        int analogReadValue;
+        int ledIntensity;
+        bool ledUsed;
+        char serRead;
+        char lastState;
+        
+        Analog_in lightInput;    //Analog input á A5 (5)
+        Digital_in fault; //Button input on pin 12 (PB4) with ISR set on true. (0, false);
+        
 };
